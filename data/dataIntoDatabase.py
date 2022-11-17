@@ -13,7 +13,7 @@ with open(dataPath, 'r', encoding='utf-8') as f:
 mysql_pool=mysql.connector.pooling.MySQLConnectionPool(
             pool_name="mypool", pool_size=10, 
             host="localhost", database="taipei_attractions",
-            user="root", password="",
+            user="root", password="christine123",
             pool_reset_session=True)
 
 try:
@@ -25,7 +25,6 @@ except Exception as e:
 #For attraction table
 for idx in range(0,len(data["result"]["results"])):
     dataId=data["result"]["results"][idx]["_id"]
-    print(dataId)
     dataName=data["result"]["results"][idx]["name"]
     dataDescription=data["result"]["results"][idx]["description"]
     dataAddress=data["result"]["results"][idx]["address"]
@@ -37,7 +36,7 @@ for idx in range(0,len(data["result"]["results"])):
     cursor.execute(sql, val)
     conn.commit()
 
-#For category table
+# #For category table
 for idx in range(0,len(data["result"]["results"])):
     dataName=data["result"]["results"][idx]["CAT"]
     sql="select id from category where name=%s"
@@ -95,10 +94,15 @@ for idx in range(0,len(data["result"]["results"])):
     for item in dataNames:
         if item and ( "jpg" in item.lower() or "png" in item.lower() ):
             imageUrl="https://"+item
-            sql ="INSERT INTO image(attraction_id,imageUrl)VALUES (%s,%s)"
-            val = (dataId,imageUrl)
-            cursor.execute(sql,val)
-            conn.commit()
+            sql="select id from image where imageUrl=%s"
+            cursor.execute(sql,[imageUrl])
+            result = cursor.fetchall()
+            print(result)
+            if len(result)==0:
+                sql ="INSERT INTO image(attraction_id,imageUrl)VALUES (%s,%s)"
+                val = (dataId,imageUrl)
+                cursor.execute(sql,val)
+                conn.commit()
 
 cursor.close()
 conn.close()
