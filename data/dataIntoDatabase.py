@@ -13,7 +13,7 @@ with open(dataPath, 'r', encoding='utf-8') as f:
 mysql_pool=mysql.connector.pooling.MySQLConnectionPool(
             pool_name="mypool", pool_size=10, 
             host="localhost", database="taipei_attractions",
-            user="root", password="christine123",
+            user="root", password="",
             pool_reset_session=True)
 
 try:
