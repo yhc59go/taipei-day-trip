@@ -36,7 +36,7 @@ for idx in range(0,len(data["result"]["results"])):
     cursor.execute(sql, val)
     conn.commit()
 
-# #For category table
+#For category table
 for idx in range(0,len(data["result"]["results"])):
     dataName=data["result"]["results"][idx]["CAT"]
     sql="select id from category where name=%s"
