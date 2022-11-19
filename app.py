@@ -9,7 +9,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 mysql_pool=mysql.connector.pooling.MySQLConnectionPool(
             pool_name="mypool", pool_size=10, 
             host="localhost", database="taipei_attractions",
-            user="root", password="",
+            user="debian-sys-maint", password="",
             pool_reset_session=True)
 
 # Pages
@@ -231,4 +231,4 @@ def getCategories():
 		response.headers["Content-Type"] = "application/json"
 		return response
 
-app.run(port=3000)
+app.run(host="0.0.0.0",port=3000)
