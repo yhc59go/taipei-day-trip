@@ -54,7 +54,7 @@ def getAttractions():
 			resultCategoryId = cursor.fetchone()
 			
 			dataAll=[]
-			nextpage=pageParameter+1
+			nextPage=pageParameter+1
 			if resultCategoryId:
 				#get id, name, description, address, transport, latitude, longitude, mrt, category
 				sql='select json_object("id",attraction.id,"name",attraction.name,"description",attraction.description,"address",attraction.address,"transport",attraction.transport,"lat",attraction.latitude,"lng",attraction.longitude,"category",category.name,"mrt",mrt.name) from attraction left JOIN category ON attraction.category_id=category.id left JOIN mrt ON attraction.mrt_id=mrt.id where category_id=%s limit %s,%s'
@@ -81,7 +81,7 @@ def getAttractions():
 					dataAll.append(resultQuery)
 
 				if dataAll:
-					response = make_response(jsonify({"nextPage":nextpage,"data":dataAll} ),200 ) 
+					response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
 				else:
 					response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
 					
