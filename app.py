@@ -61,33 +61,6 @@ def getAttractions():
 				val=(resultCategoryId[0],startId,dataCountPerPage)
 				cursor.execute(sql,val)
 				resultFromAttraction= cursor.fetchall()
-
-				resultQuery={}
-				#get images
-				for idx in range(0,dataCountPerPage):
-					if idx>=len(resultFromAttraction):
-						nextPage=None
-						break
-					dataRow=json.loads(resultFromAttraction[idx][0])
-					resultQuery.update(dataRow)
-					#get images
-					sql='select imageUrl from image where attraction_id=%s'
-					cursor.execute(sql,[dataRow["id"]])
-					resultImages = cursor.fetchall()
-					getImages=[]
-					for idx in range(0,len(resultImages)):
-						getImages.append(resultImages[idx][0])
-					resultQuery["images"]=getImages
-					dataAll.append(resultQuery)
-
-				if dataAll:
-					response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-				else:
-					response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
-					
-				response.headers["Content-Type"] = "application/json"
-				return response
-
 			else:
 				#check attraction name
 				#get id, name, description, address, transport, latitude, longitude, mrt, category
@@ -95,28 +68,27 @@ def getAttractions():
 				val=("%"+keywordParameter+"%",startId,dataCountPerPage)
 				cursor.execute(sql,val)
 				resultFromAttraction= cursor.fetchall()
+			resultQuery={}
+			for idx in range(0,dataCountPerPage):
+				if idx>=len(resultFromAttraction):
+					nextPage=None
+					break		
+				resultQuery.update(json.loads(resultFromAttraction[idx][0]))
 
-				for idx in range(0,dataCountPerPage):
-					if idx>=len(resultFromAttraction):
-						nextPage=None
-						break
-					resultQuery={}
-					resultQuery.update(json.loads(resultFromAttraction[idx][0]))
+				#get images
+				sql='select imageUrl from image where attraction_id=%s'
+				cursor.execute(sql,[resultQuery["id"]])
+				resultImages = cursor.fetchall()
+				getImages=[]
+				for idx in range(0,len(resultImages)):
+					getImages.append(resultImages[idx][0])
+				resultQuery["images"]=getImages
+				dataAll.append(resultQuery)
 
-					#get images
-					sql='select imageUrl from image where attraction_id=%s'
-					cursor.execute(sql,[resultQuery["id"]])
-					resultImages = cursor.fetchall()
-					getImages=[]
-					for idx in range(0,len(resultImages)):
-						getImages.append(resultImages[idx][0])
-					resultQuery["images"]=getImages
-					dataAll.append(resultQuery)
-
-				if dataAll:
-					response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-				else:
-					response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 		
+			if dataAll:
+				response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
+			else:
+				response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 		
 		else:	
 			#total data
 			sql='select count(id) from attraction'
