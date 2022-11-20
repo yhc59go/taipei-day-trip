@@ -28,7 +28,14 @@ def thankyou():
 
 @app.route("/api/attractions")
 def getAttractions():
-	pageParameter=int(request.args.get("page",0)) 
+	try:
+		pageParameter=int(request.args.get("page",0)) 
+	except ValueError as ex:
+		print(ex)
+		response = make_response(jsonify({"error":True,"message":"The page parameter you provied is not a digit."} ),400 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
+
 	keywordParameter=request.args.get("keyword","")
 	if pageParameter<0:
 		pageParameter=0
@@ -107,8 +114,7 @@ def getAttractions():
 				else:
 					response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
 	
-				response.headers["Content-Type"] = "application/json"
-				return response
+				
 		else:	
 			#total data
 			sql='select count(id) from attraction'
@@ -146,17 +152,15 @@ def getAttractions():
 				else:
 					nextPage=None
 					response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-	
-			response.headers["Content-Type"] = "application/json"
-			return response
 	except Exception as e:
 		print(e)
 		response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
-		response.headers["Content-Type"] = "application/json"
-		return response	
 	finally:
 		cursor.close()
 		conn.close()
+		response.headers["Content-Type"] = "application/json"
+		return response
+		
 
 @app.route("/api/attraction/<attractionId>")
 def getAttractionByAttractionId(attractionId):
@@ -189,17 +193,15 @@ def getAttractionByAttractionId(attractionId):
 		getImages=[]
 		for idx in range(0,len(resultImages)):
 			getImages.append(resultImages[idx][0])
-		resultQuery["images"]=getImages
-		
+		resultQuery["images"]=getImages		
 		response = make_response(jsonify({"data":resultQuery}),200 )   
-		response.headers["Content-Type"] = "application/json"
-		return response
 	else:
 		response = make_response(jsonify({"error":True,"message":"This attractionId is invalid."} ),400 )   
-		response.headers["Content-Type"] = "application/json"
-		return response
 	cursor.close()
 	conn.close()
+	response.headers["Content-Type"] = "application/json"
+	return response
+	
 
 @app.route("/api/categories")
 def getCategories():
