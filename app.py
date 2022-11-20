@@ -90,41 +90,33 @@ def getAttractions():
 			else:
 				response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 		
 		else:	
-			#total data
-			sql='select count(id) from attraction'
-			cursor.execute(sql)
-			resultTotal= cursor.fetchone()	
+			nextPage=pageParameter+1
+			#get id, name, description, address, transport, latitude, longitude, mrt, category
+			sql='select json_object("id",attraction.id,"name",attraction.name,"description",attraction.description,"address",attraction.address,"transport",attraction.transport,"lat",attraction.latitude,"lng",attraction.longitude,"category",category.name,"mrt",mrt.name) from attraction left JOIN category ON attraction.category_id=category.id left JOIN mrt ON attraction.mrt_id=mrt.id limit %s,%s'
+			val=(startId,dataCountPerPage)
+			cursor.execute(sql,val)
+			resultFromAttraction= cursor.fetchall()
 			
-			if startId>=resultTotal[0]:
-				response = make_response(jsonify({"data":[],"nextPage":None}) ,200 ) 
+			dataAll=[]
+			for idx in range(0,dataCountPerPage):
+				if idx>=len(resultFromAttraction):
+					nextPage=None
+					break
+				result={}
+				result.update(json.loads(resultFromAttraction[idx][0]))
+				#get images
+				sql='select imageUrl from image where attraction_id=%s'
+				cursor.execute(sql,[result["id"]])
+				resultImages = cursor.fetchall()
+				getImages=[]
+				for idx in range(0,len(resultImages)):
+					getImages.append(resultImages[idx][0])
+				result["images"]=getImages
+				dataAll.append(result)
+			if dataAll:
+				response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
 			else:
-				nextPage=pageParameter+1
-				#get id, name, description, address, transport, latitude, longitude, mrt, category
-				sql='select json_object("id",attraction.id,"name",attraction.name,"description",attraction.description,"address",attraction.address,"transport",attraction.transport,"lat",attraction.latitude,"lng",attraction.longitude,"category",category.name,"mrt",mrt.name) from attraction left JOIN category ON attraction.category_id=category.id left JOIN mrt ON attraction.mrt_id=mrt.id limit %s,%s'
-				val=(startId,dataCountPerPage)
-				cursor.execute(sql,val)
-				resultFromAttraction= cursor.fetchall()
-				
-				dataAll=[]
-				for idx in range(0,dataCountPerPage):
-					if idx>=len(resultFromAttraction):
-						nextPage=None
-						break
-					result={}
-					result.update(json.loads(resultFromAttraction[idx][0]))
-					#get images
-					sql='select imageUrl from image where attraction_id=%s'
-					cursor.execute(sql,[result["id"]])
-					resultImages = cursor.fetchall()
-					getImages=[]
-					for idx in range(0,len(resultImages)):
-						getImages.append(resultImages[idx][0])
-					result["images"]=getImages
-					dataAll.append(result)
-				if dataAll:
-					response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-				else:
-					response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
+				response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
 	except Exception as e:
 		print(e)
 		response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
