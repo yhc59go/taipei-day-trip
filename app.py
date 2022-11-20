@@ -1,15 +1,20 @@
-from flask import *
 import mysql.connector
-#from flask import  Flask,render_template,jsonify,make_response
+import os
+from dotenv import load_dotenv
+from flask import Flask,render_template,jsonify,make_response,request,json
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
+load_dotenv()
+databaseUsername=os.getenv("databaseUsername")
+databasePassword=os.getenv("databasePassword")
+
 mysql_pool=mysql.connector.pooling.MySQLConnectionPool(
             pool_name="mypool", pool_size=10, 
             host="localhost", database="taipei_attractions",
-            user="debian-sys-maint", password="",
+            user=databaseUsername, password=databasePassword,
             pool_reset_session=True)
 
 # Pages
