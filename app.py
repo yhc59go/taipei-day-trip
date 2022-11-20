@@ -65,8 +65,9 @@ def getAttractions():
 						break
 					resultQuery={}
 					#get id, name, description, address, transport, latitude, longitude, mrt, category
-					sql='select json_object("id",attraction.id,"name",attraction.name,"description",attraction.description,"address",attraction.address,"transport",attraction.transport,"lat",attraction.latitude,"lng",attraction.longitude,"category",category.name,"mrt",mrt.name) from attraction left JOIN category ON attraction.category_id=category.id left JOIN mrt ON attraction.mrt_id=mrt.id where attraction.id=%s'
-					cursor.execute(sql,[attraction_id[idx][0]])
+					sql='select json_object("id",attraction.id,"name",attraction.name,"description",attraction.description,"address",attraction.address,"transport",attraction.transport,"lat",attraction.latitude,"lng",attraction.longitude,"category",category.name,"mrt",mrt.name) from attraction left JOIN category ON attraction.category_id=category.id left JOIN mrt ON attraction.mrt_id=mrt.id where attraction.id=%s limit %s,%s'
+					val=(attraction_id[idx][0],startId,dataCountPerPage)
+					cursor.execute(sql,val)
 					resultFromAttraction= cursor.fetchone()
 					resultQuery.update(json.loads(resultFromAttraction[0]))
 					
