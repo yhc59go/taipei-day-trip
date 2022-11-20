@@ -83,12 +83,7 @@ def getAttractions():
 				for idx in range(0,len(resultImages)):
 					getImages.append(resultImages[idx][0])
 				resultQuery["images"]=getImages
-				dataAll.append(resultQuery)
-
-			if dataAll:
-				response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-			else:
-				response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 		
+				dataAll.append(resultQuery)	
 		else:	
 			nextPage=pageParameter+1
 			#get id, name, description, address, transport, latitude, longitude, mrt, category
@@ -113,10 +108,10 @@ def getAttractions():
 					getImages.append(resultImages[idx][0])
 				result["images"]=getImages
 				dataAll.append(result)
-			if dataAll:
-				response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
-			else:
-				response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
+		if dataAll:
+			response = make_response(jsonify({"nextPage":nextPage,"data":dataAll} ),200 ) 
+		else:
+			response = make_response(jsonify({"nextPage":None,"data":dataAll} ),200 ) 
 	except Exception as e:
 		print(e)
 		response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
@@ -126,7 +121,6 @@ def getAttractions():
 		response.headers["Content-Type"] = "application/json"
 		return response
 		
-
 @app.route("/api/attraction/<attractionId>")
 def getAttractionByAttractionId(attractionId):
 	
