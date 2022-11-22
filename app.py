@@ -3,7 +3,12 @@ import os
 from dotenv import load_dotenv
 from flask import Flask,render_template,jsonify,make_response,request,json
 
-app=Flask(__name__)
+app=Flask(
+			__name__,
+			static_folder="static",
+			static_url_path="/"
+		)
+		
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
@@ -196,4 +201,4 @@ def getCategories():
 		response.headers["Content-Type"] = "application/json"
 		return response
 
-app.run(host="0.0.0.0",port=3000)
+app.run(port=3000)

@@ -1,0 +1,145 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+.baseSettings 
+{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.navbarcontainer{
+    /* position: sticky;
+    top:0;
+    right: 0; */
+    width: 1200px;
+    margin-left: auto; /*為置中效果*/
+    margin-right: auto; /*為置中效果*/
+  }
+
+.nav{
+    display: grid;
+    padding: 10px;
+    align-items: center; 
+    grid-template-columns: 2fr 5fr;
+    /* background-color: bisque; */
+}
+.menu {
+    display: grid;
+    grid-auto-flow: column;
+    justify-self: end; 
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    /* background-color: rgb(245, 166, 70); */
+}
+.item {
+    margin: 0px 10px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #666666;
+}
+.title{
+    color:#448899;
+    font-weight: 700;
+    font-size: 30px;
+    /* background-color: rgb(70, 245, 73); */
+}
+.welcome{
+    width: 1920px;
+    height: 320px;
+    background-image:url(../images/welcome.jpg);
+    background-size: 1920px 480px;
+}
+.slogan{
+    width: 1180px;
+    height: 78px;
+    margin-left: auto; /*為置中效果*/
+    margin-right: auto; /*為置中效果*/
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    color: #F8F8F8;
+    margin-top: 85px;
+}
+.sloganTitle{
+    font-weight: 700;
+    font-size: 28px;
+    /* Text Shadow */
+    text-shadow: 0px 0px 30px #AABBCC;
+}
+.sloganSubtitle{
+    margin-top: 15px;
+    font-weight: 700;
+    font-size: 16px;
+}
+.search{
+    margin-top: 25px;
+}
+.searchBar{
+    width: 400px;
+    height: 46px;
+    vertical-align:middle;
+    box-sizing: border-box;
+    border:0px;
+}
+/*webkit瀏覽器專用*/
+input::-webkit-input-placeholder { 
+    padding: 15px;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #757575;
+}
+/*Firefox 4-18瀏覽器專用*/
+input::-moz-placeholder { 
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #757575;
+}
+/*Firefox 19+瀏覽器專用*/
+input::-moz-placeholder { 
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #757575;
+}
+/*IE10瀏覽器專用*/
+input::-ms-input-placeholder { 
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #757575;
+}
+.buttonForsearch{
+    width: 60px;
+    height: 46px;
+    background-color: #448899;
+    vertical-align:middle;
+    margin-bottom: 0px;
+    border-radius: 0px 6px 6px 0px;
+    border:0px;
+    background-image:url(../icons/icon_search.svg);
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-size: round;
+    background-position:center;
+}
+@media (max-width:1200px){
+    .welcome{
+        width: 100%;
+    }
+    .navbarcontainer{
+        width: 100%;
+    }
+
+}
+@media (max-width:600px){
+    .welcome{
+        width: 100%;
+    }
+    .navbarcontainer{
+        width: 100%;
+    }
+}

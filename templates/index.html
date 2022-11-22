@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <title>Taipei day trip</title>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='CSS/Layout.css')}}" />
+    </head>
+    <body class="baseSettings">
+        <div class="navbarcontainer">
+            <div class="nav">
+                <div class="title">台北一日遊</div>
+                <div class="menu">
+                    <div class="item">預定行程</div>
+                    <div class="item">登入/註冊</div>
+                </div>
+            </div>
+        </div>
+        <div class="welcome">
+            <div class="slogan">
+                <div class="sloganTitle">輕鬆享受台北一日悠閒</div>
+                <div class="sloganSubtitle">探索每個角落，體驗城市的深度旅遊行程</div>
+                <div class="search">
+                    <input class="searchBar" type="text" required="required" placeholder="輸入景點名稱查詢"/><input type="button" name="submit" class="buttonForsearch">
+                </div>
+            </div>
+        </div>
+        <script>
+            console.log('寬度：', window.innerWidth)
+            console.log('高度：', window.innerHeight)
+        </script>
+    </body>
+</html>
