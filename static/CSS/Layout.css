@@ -12,9 +12,7 @@
     margin-top: 40px;
     margin-left: auto; /*為置中效果*/
     margin-right: auto; /*為置中效果*/
-    margin-bottom: 55px;
-    /* background-color: pink; */
-    
+    margin-bottom: 55px; 
 }
 .attractionsGroup{
     display: grid;
@@ -22,7 +20,6 @@
     grid-template-columns: repeat(4, 270px);
     grid-gap: 30px; 
     grid-auto-flow: row;
-    /* background-color: aqua; */
 }
 .attractionsItem{
     width: 270px;
@@ -35,11 +32,9 @@
 .attractionTopArea{
     width: 270px;
     height: 197px;
-    background: url(../images/welcome.jpg);
     background-size: 270px 197px;
     align-items: center;
     border-radius: 5px 5px 0px 0px;
-    /* background-color: gainsboro; */
 }
 .attractionImage{
     width: 270px;
@@ -76,7 +71,6 @@
     margin-top: 10px;
     margin-bottom: 10px;
     text-align:left;
-    /* background-color: yellow; */
 }
 .category{
     color:#757575;
@@ -84,7 +78,6 @@
     margin-top: 10px;
     margin-bottom: 10px;
     text-align: right;
-    /* background-color: antiquewhite; */
 }
 .navbarcontainer{
     position: sticky;
@@ -103,8 +96,7 @@
     display: grid;
     padding: 10px;
     align-items: center; 
-    grid-template-columns: 2fr 5fr;
-    /* background-color: bisque; */
+    grid-template-columns: 1fr 1fr;
 }
 .menu {
     display: grid;
@@ -112,7 +104,6 @@
     justify-self: end; 
     font-family: 'Noto Sans TC';
     font-style: normal;
-    /* background-color: rgb(245, 166, 70); */
 }
 .item {
     margin: 0px 10px;
@@ -124,13 +115,14 @@
     color:#448899;
     font-weight: 700;
     font-size: 30px;
-    /* background-color: rgb(70, 245, 73); */
 }
 .welcome{
     width: 1920px;
     height: 320px;
     background-image:url(../images/welcome.jpg);
     background-size: 1920px 480px;
+    margin-left: auto; 
+    margin-right: auto; 
 }
 .slogan{
     width: 1180px;
@@ -209,6 +201,7 @@ input::-ms-input-placeholder {
     background-repeat: no-repeat;
     background-size: round;
     background-position:center;
+    cursor: pointer;
 }
 .footer{
     width: 1920px;
@@ -224,27 +217,91 @@ input::-ms-input-placeholder {
     font-weight: 700;
     font-size: 16px;
 }
-
-@media (max-width:1200px){
-    .welcome{
-        width: 100%;
-    }
-    .footer{
-        width: 100%;
-    }
-    .navbarcontainer{
-        width: 100%;
-    }
-
+.categoryContainer{
+    width: 400px;
+    height: 162px;
+    background: #FFFFFF;
+    /* Box Shadow */
+    box-shadow: 0px 0px 20px #AABBCC;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    grid-auto-flow: row;
+    grid-auto-rows: 40px;
+    display: none;
+    
 }
+.categoryInSearchBar{
+    padding: 10px 15px;
+    /* box-sizing: border-box; */
+    cursor: pointer;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #000000;  
+    border-radius: 5px; 
+    
+}
+
+.categoryInSearchBar:hover {
+    background-color: rgb(232, 227, 227);
+}
+
 @media (max-width:600px){
-    .welcome{
-        width: 100%;
-    }
     .footer{
         width: 100%;
     }
+    .welcome{
+        width: 360px;
+        height: 320px;
+        background-image:url(../images/welcome.jpg);
+        background-size: 1283px 320px;
+        
+    }
     .navbarcontainer{
-        width: 100%;
+        width: 360px;
+    }
+    .nav{
+        width: 340px;
+        grid-template-columns: auto auto;  
+    }
+    .slogan{
+        width: 340px;
+        height: 169px;
+    }
+    .searchBar{
+        width: 255px;
+    }
+    .attractionsArea{
+        width: 352px;
+    }
+    .attractionsGroup{
+        grid-template-columns: repeat(1, 322px);
+        align-items: center; 
+        justify-content: center;
+    }
+    .attractionTopArea{
+        width: 322px;
+        height: 235px;
+        background-size: 322px 235px;
+    }
+    .attractionImage{
+        width: 322px;
+        height: 195px;
+    }
+    .attractionBottomArea{
+        width: 322px;
+        height: 45px;
+    }
+    .attractionsItem{
+        width: 322px;
+        height: 280px;
+    }
+    .categoryContainer{
+        width: 342px;
+        grid-template-columns: repeat(3, 114px);
     }
 }
