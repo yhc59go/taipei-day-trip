@@ -157,6 +157,8 @@
             // Observe the end of content in webpage
             const observer = new IntersectionObserver(callbackForAttractions, {threshold: 0,});
             observer.observe(bottomOfContent);
+            
+
             window.onload=function(){
                 observer.observe(bottomOfContent);
                 let searchAttraction = document.getElementsByName('searchAttraction');
@@ -169,6 +171,15 @@
                     true
                 );
                 getCategoryData();
+                var body = document.body;
+                body.addEventListener(
+                    'mousedown', 
+                    function()
+                    {
+                        let categoryContainer=document.querySelector('.categoryContainer');
+                        categoryContainer.style.display="none";
+                    }  
+                ); 
             }
 
             function searchAttraction() {
