@@ -80,6 +80,7 @@ def getAttractions():
 				resultFromAttraction= cursor.fetchall()
 			resultQuery={}
 			for idx in range(0,dataCountPerPage):
+				resultQuery={}
 				if idx>=len(resultFromAttraction):
 					nextPage=None
 					break		
@@ -201,4 +202,4 @@ def getCategories():
 		response.headers["Content-Type"] = "application/json"
 		return response
 
-app.run(port=3000)
+app.run(host="0.0.0.0",port=3000)
