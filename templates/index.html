@@ -174,10 +174,12 @@
                 var body = document.body;
                 body.addEventListener(
                     'mousedown', 
-                    function()
+                    function(e)
                     {
-                        let categoryContainer=document.querySelector('.categoryContainer');
-                        categoryContainer.style.display="none";
+                        if(e.target.className!="categoryInSearchBar"){
+                            let categoryContainer=document.querySelector('.categoryContainer');
+                            categoryContainer.style.display="none";
+                        }
                     }  
                 ); 
             }
