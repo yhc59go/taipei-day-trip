@@ -7,8 +7,8 @@
     margin: 0px;
 }
 .attractionsArea{
-    /* width: 1200px; */
-    width: 100%;
+    width: 1200px;
+    /* width: 100%; */
     padding: 15px; 
     margin-top: 40px;
     margin-left: auto; /*為置中效果*/
@@ -19,7 +19,7 @@
     display: grid;
     justify-content: space-between; 
     /* grid-template-columns: repeat(4, 270px); */
-    grid-template-columns: repeat(auto-fit,  minmax(270px, auto));
+    grid-template-columns: repeat(4,  minmax(270px, auto));
     grid-gap: 30px; 
     grid-auto-flow: row;
 }
