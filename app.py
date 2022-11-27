@@ -3,7 +3,12 @@ import os
 from dotenv import load_dotenv
 from flask import Flask,render_template,jsonify,make_response,request,json
 
-app=Flask(__name__)
+app=Flask(
+			__name__,
+			static_folder="static",
+			static_url_path="/"
+		)
+		
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
@@ -75,6 +80,7 @@ def getAttractions():
 				resultFromAttraction= cursor.fetchall()
 			resultQuery={}
 			for idx in range(0,dataCountPerPage):
+				resultQuery={}
 				if idx>=len(resultFromAttraction):
 					nextPage=None
 					break		
