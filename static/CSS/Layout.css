@@ -84,21 +84,21 @@
 .navbarcontainer{
     position: sticky;
     top:0;
-    right: 0;
+    left: 0;
     /* width: 1920px; */
-    width: 100%;
-    margin-left: auto; /*為置中效果*/
-    margin-right: auto; /*為置中效果*/
+    /* width: 100%; */
+    width: 1200px;
+    margin-left: auto; 
+    margin-right: auto;
     background: white;
   }
 
 .nav{
     /* width: 1200px; */
-    width: 90%;
-    margin-left: auto; /*為置中效果*/
-    margin-right: auto; /*為置中效果*/
+    width: 100%;
+    margin-left: 0px; 
     display: grid;
-    padding: 10px;
+    padding: 10px 0px;
     align-items: center; 
     grid-template-columns: 1fr 1fr;
 }
@@ -114,7 +114,7 @@
     font-weight: 500;
     font-size: 16px;
     color: #666666;
-    margin-right: 0px;
+    
 }
 .title{
     color:#448899;
@@ -132,11 +132,11 @@
     margin-right: auto; 
 }
 .slogan{
-    width: 80%;
+    width: 1200px;
     height: 78px;
-    padding: 85px;
-    /* margin-left: auto; 
-    margin-right: auto;  */
+    padding-top: 85px;
+    margin-left: auto; 
+    margin-right: auto; 
     font-family: 'Noto Sans TC';
     font-style: normal;
     color: #F8F8F8;
@@ -272,14 +272,17 @@ input::-ms-input-placeholder {
         grid-gap: 30px; 
         grid-auto-flow: row;
     }
-    .nav{
+    .navbarcontainer{
         width: 90%;
+    }
+    .nav{
+        width: 100%;
     }
     .slogan{
         width: 50%;
     }
     .searchBar{
-        width: 200px;
+        width: 60%;
     }
     .welcome{
         background-image:url(../images/welcome.jpg);
@@ -307,11 +310,12 @@ input::-ms-input-placeholder {
         /* width: 340px; */
         width: 90%;
         grid-template-columns: auto auto;  
+        padding-left: 10px;
     }
     .slogan{
         width: 340px;
-        
         height: 169px;
+        padding: 85px 5%;
     }
     .searchBar{
         width: 255px;
