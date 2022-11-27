@@ -2,12 +2,13 @@
 
 .baseSettings 
 {
-    display: grid;
     justify-content: center;
     align-items: center;
+    margin: 0px;
 }
 .attractionsArea{
-    width: 1200px;
+    /* width: 1200px; */
+    width: 100%;
     padding: 15px; 
     margin-top: 40px;
     margin-left: auto; /*為置中效果*/
@@ -17,7 +18,8 @@
 .attractionsGroup{
     display: grid;
     justify-content: space-between; 
-    grid-template-columns: repeat(4, 270px);
+    /* grid-template-columns: repeat(4, 270px); */
+    grid-template-columns: repeat(auto-fit,  minmax(270px, auto));
     grid-gap: 30px; 
     grid-auto-flow: row;
 }
@@ -83,14 +85,16 @@
     position: sticky;
     top:0;
     right: 0;
-    width: 1920px;
+    /* width: 1920px; */
+    width: 100%;
     margin-left: auto; /*為置中效果*/
     margin-right: auto; /*為置中效果*/
     background: white;
   }
 
 .nav{
-    width: 1200px;
+    /* width: 1200px; */
+    width: 90%;
     margin-left: auto; /*為置中效果*/
     margin-right: auto; /*為置中效果*/
     display: grid;
@@ -110,6 +114,7 @@
     font-weight: 500;
     font-size: 16px;
     color: #666666;
+    margin-right: 0px;
 }
 .title{
     color:#448899;
@@ -117,28 +122,31 @@
     font-size: 30px;
 }
 .welcome{
-    width: 1920px;
+    /* width: 1920px; */
+    width: 100%;
     height: 320px;
     background-image:url(../images/welcome.jpg);
-    background-size: 1920px 480px;
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-left: auto; 
     margin-right: auto; 
 }
 .slogan{
-    width: 1180px;
+    width: 80%;
     height: 78px;
-    margin-left: auto; /*為置中效果*/
-    margin-right: auto; /*為置中效果*/
+    padding: 85px;
+    /* margin-left: auto; 
+    margin-right: auto;  */
     font-family: 'Noto Sans TC';
     font-style: normal;
     color: #F8F8F8;
-    margin-top: 85px;
 }
 .sloganTitle{
     font-weight: 700;
     font-size: 28px;
     /* Text Shadow */
     text-shadow: 0px 0px 30px #AABBCC;
+   
 }
 .sloganSubtitle{
     margin-top: 15px;
@@ -154,6 +162,11 @@
     vertical-align:middle;
     box-sizing: border-box;
     border:0px;
+    /* White */ 
+    background: #FFFFFF;
+    /* Box Shadow */
+    box-shadow: 0px 0px 20px #AABBCC;
+    
 }
 /*webkit瀏覽器專用*/
 input::-webkit-input-placeholder { 
@@ -204,7 +217,8 @@ input::-ms-input-placeholder {
     cursor: pointer;
 }
 .footer{
-    width: 1920px;
+    /* width: 1920px; */
+    width: 100%;
     height: 104px;
     left: 0px;
     bottom: 0px;
@@ -227,7 +241,8 @@ input::-ms-input-placeholder {
     position: absolute;
     z-index: 2;
     display: grid;
-    grid-template-columns: repeat(3, 120px);
+    /* grid-template-columns: repeat(3, 120px); */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     grid-auto-flow: row;
     grid-auto-rows: 40px;
     display: none;
@@ -245,9 +260,32 @@ input::-ms-input-placeholder {
     border-radius: 5px; 
     
 }
-
 .categoryInSearchBar:hover {
     background-color: rgb(232, 227, 227);
+}
+@media (max-width:1200px){
+    .attractionsArea{
+        width: 90%;
+    }
+    .attractionsGroup{
+        grid-template-columns: repeat(auto-fit,  minmax(35%, auto));
+        grid-gap: 30px; 
+        grid-auto-flow: row;
+    }
+    .nav{
+        width: 90%;
+    }
+    .slogan{
+        width: 50%;
+    }
+    .searchBar{
+        width: 200px;
+    }
+    .welcome{
+        background-image:url(../images/welcome.jpg);
+        background-size: cover;
+        
+    }
 }
 
 @media (max-width:600px){
@@ -255,21 +293,24 @@ input::-ms-input-placeholder {
         width: 100%;
     }
     .welcome{
-        width: 360px;
+        width: 100%;
         height: 320px;
         background-image:url(../images/welcome.jpg);
         background-size: 1283px 320px;
         
     }
     .navbarcontainer{
-        width: 360px;
+        /* width: 360px; */
+        width: 100%;
     }
     .nav{
-        width: 340px;
+        /* width: 340px; */
+        width: 90%;
         grid-template-columns: auto auto;  
     }
     .slogan{
         width: 340px;
+        
         height: 169px;
     }
     .searchBar{
@@ -280,6 +321,7 @@ input::-ms-input-placeholder {
     }
     .attractionsGroup{
         grid-template-columns: repeat(1, 322px);
+        
         align-items: center; 
         justify-content: center;
     }
@@ -302,6 +344,85 @@ input::-ms-input-placeholder {
     }
     .categoryContainer{
         width: 342px;
-        grid-template-columns: repeat(3, 114px);
+        grid-template-columns: repeat(auto-fit, minmax(114px, 1fr));
+    }
+}
+@media (max-width:360px){
+    .footer{
+        width: 100%;
+    }
+    .welcome{
+        width: 100%;
+        height: 320px;
+        background-image:url(../images/welcome.jpg);
+        background-size: 1283px 320px;
+        
+    }
+    .navbarcontainer{
+        width: 100%;
+    }
+    .nav{
+        width: 94%;
+        grid-template-columns: auto auto;  
+        margin: 0px;
+    }
+    .slogan{
+        margin: 0px;
+        width: 320px;
+        height: 169px;
+        margin-left: 0px;
+        text-align:left;
+        padding: 86px 10px;
+        box-sizing: border-box;
+    }
+    .searchBar{
+        width: 255px;
+    }
+    .attractionsArea{
+        width: 90%;
+    }
+    .attractionsGroup{
+        grid-template-columns: repeat(1, 322px);
+        align-items: center; 
+        justify-content: center;
+    }
+    .attractionTopArea{
+        width: 321px;
+        height: 235px;
+        background-size: 321px 235px;
+    }
+    .attractionImage{
+        width: 321px;
+        height: 195px;
+    }
+    .attractionBottomArea{
+        width: 321px;
+        height: 45px;
+    }
+    .attractionsItem{
+        width: 321px;
+        height: 280px;
+    }
+    .categoryContainer{
+        width: 342px;
+        grid-template-columns: repeat(auto-fit, minmax(114px, 1fr));
+    }
+    .title{
+        margin: 0px;
+    }
+    .menu {
+        margin: 0px;
+    }
+    .sloganTitle{
+        margin: 0px;
+        text-align:left;      
+    }
+    .welcome{
+        margin: 0px;
+        text-align:left;
+    }
+    .searchBar{
+        width: 230px;
+        height: 46px;
     }
 }
