@@ -92,6 +92,7 @@ input[type='radio']:checked:before {
 .bookingDetail{
     width: 560px;
     height: 22px;
+    padding-top: 10px;
     margin-bottom: 30px;
     margin-top: 25px;
     margin-right: 10px;
@@ -115,7 +116,7 @@ input[type='radio']:checked:before {
     width: 600px;
     height: 22px;
     left: 0px;
-    margin-top: 15px;
+    margin-top: 30px;
     font-family: 'Noto Sans TC';
     font-style: normal;
     font-weight: 500;
@@ -202,7 +203,7 @@ input[type='radio']:checked:before {
 }
 .imageAndBookingArea{
     width: 1180px;
-    height: 400px;
+    height: 410px;
     display: grid;
     grid-template-columns: 540px 600px;
     justify-content:space-between;
@@ -383,13 +384,19 @@ input[type='radio']:checked:before {
     }
     .imageAndBookingArea{
         width: 100%;
-        height: 820px;
+        height: 840px;
         grid-template-columns: 90% ;
     }
     .nav{
         width: 90%;
         grid-template-columns: auto auto;  
         padding-left: 10px;
+    }
+    .categoryAndMrt{
+        margin-top: 30px;
+    }
+    .attractionName{
+        margin-top: 10px;
     }
 }
 @media (max-width:360px){
@@ -405,7 +412,7 @@ input[type='radio']:checked:before {
     }
     .imageAndBookingArea{
         width: 100%;
-        height: 900px;
+        height: 925px;
         grid-template-columns: 90% ;
     }
     .profileArea{
@@ -421,4 +428,5 @@ input[type='radio']:checked:before {
     .booking{
         height: 375px;
     }
+    
 }
