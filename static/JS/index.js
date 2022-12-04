@@ -80,9 +80,15 @@ function getData(src){
 
                 let attractionsItem=document.createElement('div');
                 attractionsItem.className = "attractionsItem"; 
-                attractionsItem.appendChild(attractionTopArea);
-                attractionsItem.appendChild(attractionBottomArea);
 
+                let hyperlinkAttraction=document.createElement('a');
+                hyperlinkAttraction.setAttribute('href', '/attraction/'+data["data"][idx]["id"]);
+                hyperlinkAttraction.appendChild(attractionTopArea);
+                hyperlinkAttraction.appendChild(attractionBottomArea);
+                
+                attractionsItem.appendChild(hyperlinkAttraction);
+
+                
                 let attractionsGroup=document.querySelector('.attractionsGroup');
                 attractionsGroup.appendChild(attractionsItem);
             }

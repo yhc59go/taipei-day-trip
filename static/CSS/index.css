@@ -1,5 +1,7 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
-
+a {
+    text-decoration: none;
+}
 .baseSettings 
 {
     justify-content: center;
