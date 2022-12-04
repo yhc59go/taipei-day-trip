@@ -1,6 +1,6 @@
 var pathname = window.location.pathname;
 let attractionId=pathname.split("/")[2];
-src=`http://127.0.0.1:3000/api/attraction/${attractionId}`;
+src=`http://54.150.212.206:3000/api/attraction/${attractionId}`;
 window.onload=function(){
     //Get data of attraction, images
     fetch(src,
