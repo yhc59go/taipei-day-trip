@@ -66,10 +66,8 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-    console.log(n);
     let i;
     let slides = document.getElementsByClassName("slide");
-    console.log(slides.length);
     let dots = document.getElementsByClassName("dot");
     if (n >= slides.length) {slideIndex = slides.length-1}
     if (n < 1) {slideIndex = 0}
@@ -79,9 +77,6 @@ function showSlides(n) {
     for (i = 0; i < dots.length; i++) {
         dots[i].className = dots[i].className.replace(" active", "");
     }
-    console.log("===================");
-    console.log(slideIndex);
-    console.log("===================");
     slides[slideIndex].style.display = "block";
     dots[slideIndex].className += " active";
 }
