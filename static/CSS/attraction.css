@@ -176,7 +176,7 @@ input[type='radio']:checked:before {
     width: 540px; 
     height: 400px;
     background-size: 540px 400px;
-    background-repeat: round;
+    background-repeat: cover;
 }
 .slideShowContainer .prev,.slideShowContainer .next {
     cursor: pointer;
@@ -299,7 +299,7 @@ input[type='radio']:checked:before {
     font-style: normal;
 }
 .item {
-    margin: 0px 10px;
+    margin: 0px 5px;
     font-weight: 500;
     font-size: 16px;
     color: #666666;
@@ -398,8 +398,11 @@ input[type='radio']:checked:before {
         height: 840px;
         grid-template-columns: 100% ;
     }
+    .navbarcontainer{
+        width: 100%;
+    }
     .nav{
-        width: 90%;
+        width: 100%;
         grid-template-columns: auto auto;  
         padding-left: 10px;
     }
@@ -419,11 +422,12 @@ input[type='radio']:checked:before {
 }
 @media (max-width:360px){
     .nav{
-        width: 94%;
         margin: 0px;
+        /* box-sizing: unset; */
     }   
     .title{
         margin: 0px;
+        box-sizing: unset;
     }
     .menu {
         margin: 0px;
