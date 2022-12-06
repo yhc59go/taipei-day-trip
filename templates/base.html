@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <title>Taipei day trip</title>
+        
+        {% block styleCSS %}
+        {% endblock %}
+    </head>
+    <body class="baseSettings">
+        <div class="navbarcontainer">
+            <div class="nav">
+                <div class="title">台北一日遊</div>
+                <div class="menu">
+                    <div class="item">預定行程</div>
+                    <div class="item">登入/註冊</div>
+                </div>
+            </div>
+        </div>
+        {% block body %}
+        {% endblock %}
+        <div class="footer">COPYRIGHT © 2022 台北一日遊
+        </div>
+        {% block script %}
+        {% endblock %}
+    </body>
+</html>
