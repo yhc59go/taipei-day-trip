@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 from flask import Flask,render_template,jsonify,make_response,request,json
 import jwt
 import time
+from flask_cors import CORS
 
 app=Flask(
 			__name__,
 			static_folder="static",
 			static_url_path="/"
 		)
-		
+CORS(app)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
