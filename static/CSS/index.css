@@ -4,8 +4,10 @@ a {
 }
 .baseSettings 
 {
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
+    justify-content: start;
+    align-items: start;
     margin: 0px;
 }
 .attractionsArea{
@@ -116,7 +118,7 @@ a {
     font-weight: 500;
     font-size: 16px;
     color: #666666;
-    
+    cursor: pointer;
 }
 .title{
     color:#448899;
