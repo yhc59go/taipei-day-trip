@@ -43,47 +43,52 @@ def thankyou():
 def registerAccount():
 	registerInfo = request.get_data().decode("utf-8") 
 	registerInfo=json.loads(registerInfo)
-	#check databases
-	try:
-		conn = mysql_pool.get_connection() #get connection from connect pool
-		cursor = conn.cursor()
-		sql = 'select id from member WHERE email=%s'
-		cursor.execute(sql, [registerInfo['email']])
-		checkEmail = cursor.fetchone() 
-	except Exception as e:
-		print(e)
-		response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
-		response.headers["Content-Type"] = "application/json"
-		return response
-	finally:
-		cursor.close()
-		conn.close()
-	if checkEmail:
-		response = make_response(jsonify({"error":True,"message":"這個email已經註冊過囉!"} ),400 )   
-		response.headers["Content-Type"] = "application/json"
-		return response	
-	else:
-		#add member to database
+	if(registerInfo['name'] and registerInfo['password'] and registerInfo['email']):
+		#check databases
 		try:
 			conn = mysql_pool.get_connection() #get connection from connect pool
 			cursor = conn.cursor()
-			sql ="INSERT INTO member(username,password,email)VALUES (%s, %s, %s)"
-			cursor.execute(sql, (registerInfo['name'], registerInfo['password'],registerInfo['email']))		
-			count = cursor.rowcount 
-			conn.commit()		
+			sql = 'select id from member WHERE email=%s'
+			cursor.execute(sql, [registerInfo['email']])
+			checkEmail = cursor.fetchone() 
 		except Exception as e:
 			print(e)
 			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
 			response.headers["Content-Type"] = "application/json"
 			return response
-		finally: # must close cursor and conn!!
+		finally:
 			cursor.close()
-			conn.close()	
-		if(count==1):
-				response = make_response(jsonify({"ok":True}),200 )   
+			conn.close()
+		if checkEmail:
+			response = make_response(jsonify({"error":True,"message":"這個email已經註冊過囉!"} ),400 )   
+			response.headers["Content-Type"] = "application/json"
+			return response	
+		else:
+			#add member to database
+			try:
+				conn = mysql_pool.get_connection() #get connection from connect pool
+				cursor = conn.cursor()
+				sql ="INSERT INTO member(username,password,email)VALUES (%s, %s, %s)"
+				cursor.execute(sql, (registerInfo['name'], registerInfo['password'],registerInfo['email']))		
+				count = cursor.rowcount 
+				conn.commit()		
+			except Exception as e:
+				print(e)
+				response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
 				response.headers["Content-Type"] = "application/json"
 				return response
-		response = make_response(jsonify({"error":True,"message":"Can't store data to database."} ),500 )   
+			finally: # must close cursor and conn!!
+				cursor.close()
+				conn.close()	
+			if(count==1):
+					response = make_response(jsonify({"ok":True}),200 )   
+					response.headers["Content-Type"] = "application/json"
+					return response
+			response = make_response(jsonify({"error":True,"message":"Can't store data to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"Pleae input username, password and email."} ),400 )   
 		response.headers["Content-Type"] = "application/json"
 		return response
 
