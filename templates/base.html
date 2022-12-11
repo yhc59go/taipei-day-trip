@@ -139,8 +139,10 @@
                             "password": userPassword
                         };
                 let showMessageForSignIn=document.getElementById("showMessageForSignIn");
+                let newHeight="300px";
+                let originHeight="265px";
                 if(showMessageForSignIn){
-                    signInDialog.style.height="265px";
+                    signInDialog.style.height=originHeight;
                     signInDialog.removeChild(showMessageForSignIn);
                     var messageForSignIn=showMessageForSignIn;
                 }else{
@@ -167,7 +169,7 @@
                                 messageForSignIn.style.fontWeight="bold";
                                 // messageForSignIn.textContent="";
                                 messageForSignIn.textContent=data["message"];
-                                signInDialog.style.height="300px";
+                                signInDialog.style.height=newHeight;
                                 signInDialog.insertBefore(messageForSignIn,signUpMessage);
                             }
                         }
@@ -177,7 +179,7 @@
                     messageForSignIn.style.fontWeight="bold";
                     // messageForSignIn.textContent="";
                     messageForSignIn.textContent="電子信箱與密碼欄都需要輸入唷!";
-                    signInDialog.style.height="300px";
+                    signInDialog.style.height=newHeight;
                     signInDialog.insertBefore(messageForSignIn,signUpMessage);
                 }
             }
@@ -195,6 +197,8 @@
                 let username=signUpForm["username"].value;
                 let userEmail=signUpForm["userEmail"].value;
                 let userPassword=signUpForm["userPassword"].value;
+                let newHeight="355px";
+                let originHeight="340px";
                 
                 let src="/api/user";
                 let body={
@@ -204,7 +208,7 @@
                         };
                 let showMessage=document.getElementById("showMessageForSignUp");
                 if(showMessage){
-                    signUpDialog.style.height="340px";
+                    signUpDialog.style.height=originHeight;
                     signUpDialog.removeChild(showMessage);
                     var messageForSignUp=showMessage;
                 }else{
@@ -225,7 +229,7 @@
                                 messageForSignUp.style.color="#448899";
                                 messageForSignUp.style.fontWeight="bold";
                                 messageForSignUp.textContent="註冊成功";
-                                signUpDialog.style.height="355px";
+                                signUpDialog.style.height=newHeight;
                                 signUpDialog.insertBefore(messageForSignUp,signInMessage);
                                 
                             }else if(data["error"]==true) {
@@ -233,7 +237,7 @@
                                 messageForSignUp.style.color="red";
                                 messageForSignUp.style.fontWeight="bold";
                                 messageForSignUp.textContent=data["message"];
-                                signUpDialog.style.height="355px";
+                                signUpDialog.style.height=newHeight;
                                 signUpDialog.insertBefore(messageForSignUp,signInMessage);
                             }
                         }
@@ -242,7 +246,7 @@
                     messageForSignUp.style.color="red";
                     messageForSignUp.style.fontWeight="bold";
                     messageForSignUp.textContent="姓名、電子郵件與密碼欄都需要輸入唷!";
-                    signUpDialog.style.height="355px";
+                    signUpDialog.style.height=newHeight;
                     signUpDialog.insertBefore(messageForSignUp,signInMessage);
                 }
             }
