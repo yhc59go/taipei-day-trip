@@ -1,7 +1,5 @@
-let dataNumber=-1;
-let totalAttractionInFirstPage=12;
 var nextPage=0;
-isLoading=false;
+let isLoading=false;
 var keywordOfSearch;
 var src=`http://54.150.212.206:3000/api/attractions?page=${nextPage}`;
 function getCategoryData(){
