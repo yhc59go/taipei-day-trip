@@ -224,7 +224,6 @@
                                 //register successfully
                                 messageForSignUp.style.color="#448899";
                                 messageForSignUp.style.fontWeight="bold";
-                                // messageForSignUp.textContent="";
                                 messageForSignUp.textContent="註冊成功";
                                 signUpDialog.style.height="355px";
                                 signUpDialog.insertBefore(messageForSignUp,signInMessage);
@@ -233,7 +232,6 @@
                                 //Show error message in sign up dialog
                                 messageForSignUp.style.color="red";
                                 messageForSignUp.style.fontWeight="bold";
-                                // messageForSignUp.textContent="";
                                 messageForSignUp.textContent=data["message"];
                                 signUpDialog.style.height="355px";
                                 signUpDialog.insertBefore(messageForSignUp,signInMessage);
@@ -243,7 +241,6 @@
                 }else{
                     messageForSignUp.style.color="red";
                     messageForSignUp.style.fontWeight="bold";
-                    // messageForSignUp.textContent="";
                     messageForSignUp.textContent="姓名、電子郵件與密碼欄都需要輸入唷!";
                     signUpDialog.style.height="355px";
                     signUpDialog.insertBefore(messageForSignUp,signInMessage);
