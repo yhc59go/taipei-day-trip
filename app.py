@@ -89,7 +89,7 @@ def registerAccount():
 			response.headers["Content-Type"] = "application/json"
 			return response
 	else:
-		response = make_response(jsonify({"error":True,"message":"Pleae input username, password and email."} ),400 )   
+		response = make_response(jsonify({"error":True,"message":"Please input username, password and email."} ),400 )   
 		response.headers["Content-Type"] = "application/json"
 		return response
 
