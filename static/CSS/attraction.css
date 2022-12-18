@@ -4,6 +4,7 @@
     word-wrap:break-word;
 }
 .bookingSubmit{
+    cursor: pointer;
     margin-top: 25px;
     padding: 10px 20px;
     width: 154px;
@@ -124,7 +125,7 @@ input[type='radio']:checked:before {
     line-height: 13px;
     color: #666666;
 }
-.attractionName{
+.attractionNameInAttracionPage{
     width: 600px;
     height: 33px;
     left: 0px;
@@ -376,7 +377,7 @@ input[type='radio']:checked:before {
         width: 100%;
         margin-left: 0%;
     }
-    .attractionName{
+    .attractionNameInAttracionPage{
         width: 90%;
     }
     .imageAndBookingArea{
@@ -410,7 +411,7 @@ input[type='radio']:checked:before {
     .categoryAndMrt{
         margin-top: 15px;
     }
-    .attractionName{
+    .attractionNameInAttracionPage{
         margin-top: 10px;
     }
     .mainContent{

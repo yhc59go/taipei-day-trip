@@ -5,6 +5,7 @@ from flask import Flask,render_template,jsonify,make_response,request,json
 import jwt
 import time
 from flask_cors import CORS
+from flask import redirect
 
 app=Flask(
 			__name__,
@@ -39,6 +40,141 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+
+@app.route("/api/booking",methods=["GET"])
+def getBookingInfo():
+	getToken=request.cookies.get("token")
+	if(getToken):
+		try:
+			payload=jwt.decode(getToken,key,algorithms='HS256')
+		except jwt.ExpiredSignatureError as e:
+			response = make_response(jsonify({"error":True,"message":e}),403 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		try:
+			conn = mysql_pool.get_connection() #get connection from connect pool
+			cursor = conn.cursor()
+			sql='select json_object("id",attraction.id,"name",attraction.name,"address",attraction.address,"image",image.imageUrl), booking.date, booking.time, booking.price from booking inner join attraction inner join image on attraction.id=image.attraction_id and attraction.id = booking.attractionId where booking.memberId=%s limit 1'
+			cursor.execute(sql,[payload["id"]])
+			attractionInfo = cursor.fetchone()
+		except Exception as e:
+			print(e)
+			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		finally: # must close cursor and conn!!
+			cursor.close()
+			conn.close()
+		if attractionInfo:
+			bookingAttraction=attractionInfo[0]
+			bookingDate=attractionInfo[1]
+			bookingTime=attractionInfo[2]
+			bookingPrice=attractionInfo[3]
+			response = make_response(jsonify({"data":{"attraction":bookingAttraction,
+														"date": bookingDate,
+														"time": bookingTime,
+														"price": bookingPrice
+													}
+											}),200 
+									)    
+			response.headers["Content-Type"] = "application/json"
+			return response
+		else:
+			response = make_response(jsonify({"data":None}),200 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"You didn't login. Please login for this service."}),403 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
+@app.route("/api/booking",methods=["POST"])
+def creatBooking():
+	getToken=request.cookies.get("token")
+	if(getToken):
+		try:
+			payload=jwt.decode(getToken,key,algorithms='HS256')
+		except jwt.ExpiredSignatureError as e:
+			response = make_response(jsonify({"error":True,"message":e}),403 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+
+		bookingInfo = request.get_data().decode("utf-8") 
+		bookingInfo=json.loads(bookingInfo)
+
+		#add booking info to database
+		try:
+			conn = mysql_pool.get_connection() #get connection from connect pool
+			cursor = conn.cursor()
+			sql='select memberId from booking where memberId=%s'
+			cursor.execute(sql,[payload["id"]])
+			checkDuplicate = cursor.fetchone()
+			if checkDuplicate:
+				#delete duplicate
+				sql='DELETE FROM booking WHERE memberId=%s'
+				cursor.execute(sql,[payload["id"]])
+				conn.commit()	
+
+			sql ="INSERT INTO booking(memberId,attractionId,date,time,price)VALUES (%s, %s, %s, %s, %s)"
+			val=(payload["id"],bookingInfo["attractionId"],bookingInfo["date"],bookingInfo["time"],bookingInfo["price"])
+			cursor.execute(sql, val)		
+			count = cursor.rowcount 
+			conn.commit()		
+		except Exception as e:
+			print(e)
+			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		finally: # must close cursor and conn!!
+			cursor.close()
+			conn.close()
+
+		if(count==1):
+			response = make_response(jsonify({"ok":True}),200 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		else:
+			response = make_response(jsonify({"error":True,"message":"Can't store to database."} ),400 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"You didn't login. Please login for this service."}),403 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
+
+@app.route("/api/booking",methods=["DELETE"])
+def deleteBooking():
+	getToken=request.cookies.get("token")
+	if(getToken):
+		try:
+			payload=jwt.decode(getToken,key,algorithms='HS256')
+		except jwt.ExpiredSignatureError as e:
+			response = make_response(jsonify({"error":True,"message":e}),403 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		try:
+			conn = mysql_pool.get_connection() #get connection from connect pool
+			cursor = conn.cursor()	
+			sql='DELETE FROM booking WHERE memberId=%s'
+			cursor.execute(sql,[payload["id"]])
+			conn.commit()		
+			count = cursor.rowcount 
+			conn.commit()		
+			print(count)
+		except Exception as e:
+			print(e)
+			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		finally: # must close cursor and conn!!
+			cursor.close()
+			conn.close()
+		response = make_response(jsonify({"ok":True}),200 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
+	else:
+		response = make_response(jsonify({"error":True,"message":"You didn't login. Please login for this service."}),403 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
 
 @app.route("/api/user",methods=["POST"])
 def registerAccount():
