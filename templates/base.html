@@ -5,15 +5,17 @@
         <meta charset="utf-8" />
         <title>Taipei day trip</title>
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='CSS/common.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='CSS/index.css')}}" />   
+    
         {% block styleCSS %}
         {% endblock %}
     </head>
     <body class="baseSettings">
         <div class="navbarcontainer">
             <div class="nav">
-                <div class="title">台北一日遊</div>
+                <div class="title" id="titleOfWeb">台北一日遊</div>
                 <div class="menu">
-                    <div class="item">預定行程</div>
+                    <div class="item" id="bookingRecording">預定行程</div>
                     <div class="item" id="signInSignUp">登入/註冊</div>
                 </div>
             </div>
@@ -22,13 +24,13 @@
         {% endblock %}
         <div class="footer">COPYRIGHT © 2022 台北一日遊
         </div>
-        <button id="show">show</button>
+    
         <div class="mask" id="mask"></div>
         <dialog id="signInDialog" class="signInDialog">
             <div class="logInUp"><div class="logInUpTitle">登入會員帳號</div><div id="closeSignInDialog" class="closeButton"></div></div>
             <form id="loginForm" method="dialog">
-                <input id="userEmail"  class="inputItem"  type="text" placeholder="輸入電子信箱" required>
-                <input id="userPassword" class="inputItem" type="password" placeholder="輸入密碼" required>
+                <input id="userEmailForSignIn"  class="inputItem"  type="text" placeholder="輸入電子信箱" required>
+                <input id="userPasswordForSignIn" class="inputItem" type="password" placeholder="輸入密碼" required>
                 <input type="button" class="logInUpSubmit" id="logInSubmit"  value="登入帳戶">
             </form>
             <div id="signUpMessage" class="signInUpMessage">還沒有帳戶?點此註冊</div>
@@ -38,14 +40,43 @@
             <div class="logInUp"><div class="logInUpTitle">註冊會員帳號</div><div id="closeSignUpDialog" class="closeButton"></div></div>
             <form id="signUpForm" method="dialog">
                 <input id="username" class="inputItem" type="text" placeholder="輸入姓名" required>
-                <input id="userEmail" class="inputItem" type="text" placeholder="輸入電子郵件" required>
-                <input id="userPassword" class="inputItem" type="password" placeholder="輸入密碼" required>
+                <input id="userEmailForSignUp" class="inputItem" type="text" placeholder="輸入電子郵件" required>
+                <input id="userPasswordForSignUp" class="inputItem" type="password" placeholder="輸入密碼" required>
                 <input type="button" class="logInUpSubmit" id="logUpSubmit" value="註冊新帳戶">
             </form>
             <div id="signInMessage" class="signInUpMessage">已經有帳戶了?點此登入</div>
         </dialog>
 
         <script>
+            const titleBlock=document.getElementById("titleOfWeb");
+            titleBlock.addEventListener("click", function(){
+                location.href="/";
+            });
+            
+            const bookingRecording=document.getElementById("bookingRecording");
+            bookingRecording.addEventListener("click", checkbForBookingRecording);
+            //check login for booking recording
+            function checkbForBookingRecording(){
+                let src="/api/user/auth";           
+                fetch(src,
+                        {
+                            method:"GET",
+                            headers:{"Content-Type": "application/json"},
+                        }
+                ).then(response => response.json())
+                .then(function(data){
+                        if(data.data){
+                            //User already login
+                            location.href="/booking";
+                            
+                        }
+                        else{
+                            showSignInUpDialog();
+                        }
+                    }
+                );
+                
+            }
             const signInSignUp=document.getElementById("signInSignUp");
             const signInDialog=document.getElementById("signInDialog");
             const mask=document.getElementById("mask");
@@ -131,12 +162,12 @@
             }
             function signIn(){
                 //Get data from user
-                let userEmail=loginForm["userEmail"].value;
-                let userPassword=loginForm["userPassword"].value;
+                let userEmailForSignIn=loginForm["userEmailForSignIn"].value;
+                let userPasswordForSignIn=loginForm["userPasswordForSignIn"].value;
                 let src="/api/user/auth";
                 let body={
-                            "email": userEmail,
-                            "password": userPassword
+                            "email": userEmailForSignIn,
+                            "password": userPasswordForSignIn
                         };
                 let showMessageForSignIn=document.getElementById("showMessageForSignIn");
                 let newHeight="300px";
@@ -149,7 +180,7 @@
                     var messageForSignIn=document.createElement('div');
                     messageForSignIn.id="showMessageForSignIn";
                 }
-                if(userEmail && userPassword){
+                if(userEmailForSignIn && userPasswordForSignIn){
                     fetch(src,
                             {
                                 method:"PUT",
@@ -195,16 +226,16 @@
             function signUp(){
                 //Get data from user
                 let username=signUpForm["username"].value;
-                let userEmail=signUpForm["userEmail"].value;
-                let userPassword=signUpForm["userPassword"].value;
+                let userEmailForSignUp=signUpForm["userEmailForSignUp"].value;
+                let userPasswordForSignUp=signUpForm["userPasswordForSignUp"].value;
                 let newHeight="355px";
                 let originHeight="340px";
                 
                 let src="/api/user";
                 let body={
                             "name": username,
-                            "email": userEmail,
-                            "password": userPassword
+                            "email": userEmailForSignUp,
+                            "password": userPasswordForSignUp
                         };
                 let showMessage=document.getElementById("showMessageForSignUp");
                 if(showMessage){
@@ -215,7 +246,7 @@
                     var messageForSignUp=document.createElement('div');
                     messageForSignUp.id="showMessageForSignUp";
                 }
-                if(username && userEmail && userPassword){
+                if(username && userEmailForSignUp && userPasswordForSignUp){
                     fetch(src,
                             {
                                 method:"POST",
@@ -253,7 +284,6 @@
 
             function checkToken(){
                 let src="/api/user/auth";
-                
                 fetch(src,
                         {
                             method:"GET",

@@ -22,7 +22,7 @@
             </div>
             
             <div id="profileArea" class="profileArea">
-                <div id="attractionName" class="attractionName"></div>
+                <div id="attractionNameInAttracionPage" class="attractionNameInAttracionPage"></div>
                 <div id="categoryAndMrt" class="categoryAndMrt"></div>
                 <div id="booking" class="booking">
                     <div id="bookingDetail" class="bookingDetail">訂購導覽行程</div>
@@ -33,8 +33,8 @@
                         min="2022-12-01" max="2030-12-31" class="tripDate">
                     </div>
                     <div class="bookingDetail">選擇時間:
-                        <input type="radio" class="button_radio" id="radioId" name="tripTime" value="morning" onclick="checkRadio(value)">上半天
-                        <input type="radio" class="button_radio" name="tripTime" value="afternoon" onclick="checkRadio(value)">下半天
+                        <input type="radio" class="button_radio" id="radioIdMorning" name="tripTime" value="morning" onclick="checkRadio(value)" checked>上半天
+                        <input type="radio" class="button_radio" id="radioIdAfternoon" name="tripTime" value="afternoon" onclick="checkRadio(value)">下半天
                     </div>
                     <div class="bookingCostTitle">導覽費用: <span class="bookingCost" id="bookingCost">新台幣2000元</span></div>
                     <input type="button" class="bookingSubmit" id="bookingSubmit" value="開始預約行程">
