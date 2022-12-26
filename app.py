@@ -104,7 +104,7 @@ def creatOrder():
 		try:
 			conn = mysql_pool.get_connection() #get connection from connect pool
 			cursor = conn.cursor()
-			sql ="INSERT INTO orderInfo(orderId,paymentStatus,memberId,attractionId,date,time,price,member_phone)VALUES (%s, %s, %s, %s, %s, %s, %s,%s)"
+			sql ="INSERT INTO orderinfo(orderId,paymentStatus,memberId,attractionId,date,time,price,member_phone)VALUES (%s, %s, %s, %s, %s, %s, %s,%s)"
 			val=(orderId,"unpaid",payload["id"],orderInfo["order"]["trip"]["attraction"]["id"],orderInfo["order"]["trip"]["date"],orderInfo["order"]["trip"]["time"],orderInfo["order"]["price"],orderInfo["order"]["contact"]["phone"])
 			cursor.execute(sql,val)	
 			count = cursor.rowcount 
@@ -157,7 +157,7 @@ def creatOrder():
 				try:
 					conn = mysql_pool.get_connection() #get connection from connect pool
 					cursor = conn.cursor()
-					sql="UPDATE orderInfo SET paymentStatus=%s WHERE orderId=%s"
+					sql="UPDATE orderinfo SET paymentStatus=%s WHERE orderId=%s"
 					val=("paid",orderId)
 					cursor.execute(sql,val)	
 					conn.commit()	
