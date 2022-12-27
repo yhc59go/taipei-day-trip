@@ -318,9 +318,11 @@ function sendPrimeToBackendServer(prime){
     ).then(response => response.json())
     .then(function(data){         
             if(data.data){
-                window.location.href="thankyou?number=" + data.data.number;
+                window.location.href="thankyou?number=" + data.data.number;         
             }else if(data.error==true){
-                console.log( data.message);              
+                alert("Got error:"+data.message); 
+                alert("Redirect to home page."); 
+                window.location.href="/";             
             }
         }
     ); 
