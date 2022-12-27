@@ -6,6 +6,7 @@ import jwt
 import time
 from flask_cors import CORS
 from flask import redirect
+import requests
 
 app=Flask(
 			__name__,
@@ -40,6 +41,157 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+@app.route("/api/orders/<orderNumber>",methods=["GET"])
+def getOrderInfoByNumber(orderNumber):
+	getToken=request.cookies.get("token")
+	if(getToken):
+		try:
+			conn = mysql_pool.get_connection() #get connection from connect pool
+			cursor = conn.cursor(buffered=True)
+			sql='select json_object("id",attraction.id,"name",attraction.name,"address",attraction.address,"image",image.imageUrl),orderinfo.date,orderinfo.time,orderinfo.price,orderinfo.paymentStatus,orderinfo.memberId from orderinfo inner join attraction inner join image on attraction.id=image.attraction_id and attraction.id = orderinfo.attractionId where orderinfo.orderId=%s'
+			cursor.execute(sql,[orderNumber])
+			attractionInfo = cursor.fetchone()
+
+			sql='select json_object("name",member.username,"email",member.email,"phone",orderinfo.member_phone) from orderinfo inner join member on orderinfo.memberId=member.id where orderinfo.orderId=%s'
+			cursor.execute(sql,[orderNumber])
+			getMemberInfo = cursor.fetchone()
+			if attractionInfo and getMemberInfo:
+				if attractionInfo[4]=="paid":
+					statusRecord=0
+				else:
+					statusRecord=1
+				responseData={
+					"number":orderNumber,
+					"price":attractionInfo[3],
+					"trip":{
+						"attraction":attractionInfo[0],
+						"date":attractionInfo[1],
+						"time":attractionInfo[2]
+					},
+					"contact":getMemberInfo[0],
+					"status":statusRecord
+				}
+				response = make_response(jsonify({"data":responseData} ),200 )  
+			else:
+				response = make_response(jsonify({"data":False} ),200 )
+		except Exception as e:
+			print(e)
+			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		finally: # must close cursor and conn!!
+			cursor.close()
+			conn.close()
+	else:
+		response = make_response(jsonify({"error":True,"message":"You didn't login. Please login for this service."}),403 )   
+	response.headers["Content-Type"] = "application/json"
+	return response
+@app.route("/api/orders",methods=["POST"])
+def creatOrder():
+	getToken=request.cookies.get("token")
+	if(getToken):
+		try:
+			payload=jwt.decode(getToken,key,algorithms='HS256')
+		except jwt.ExpiredSignatureError as e:
+			response = make_response(jsonify({"error":True,"message":e}),403 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+
+		orderInfo = request.get_data().decode("utf-8") 
+		orderInfo=json.loads(orderInfo)
+		orderId=round(time.time())
+		#Add order to database
+		try:
+			conn = mysql_pool.get_connection() #get connection from connect pool
+			cursor = conn.cursor()
+			sql ="INSERT INTO orderinfo(orderId,paymentStatus,memberId,attractionId,date,time,price,member_phone)VALUES (%s, %s, %s, %s, %s, %s, %s,%s)"
+			val=(orderId,"unpaid",payload["id"],orderInfo["order"]["trip"]["attraction"]["id"],orderInfo["order"]["trip"]["date"],orderInfo["order"]["trip"]["time"],orderInfo["order"]["price"],orderInfo["order"]["contact"]["phone"])
+			cursor.execute(sql,val)	
+			count = cursor.rowcount 
+			conn.commit()		
+		except Exception as e:
+			print(e)
+			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		finally: # must close cursor and conn!!
+			cursor.close()
+			conn.close()	
+
+		if(count==1):
+			#Sent request to TapPay server#
+			partnerKey=os.getenv("partnerKey")
+			merchantId=os.getenv("merchantId")
+			TapPayUrl="https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+			# 測試環境 URL: https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime
+			# 正式環境 URL: https://prod.tappaysdk.com/tpc/payment/pay-by-prime
+			headers={ 
+				"Content-Type": "application/json",
+				"x-api-key": partnerKey
+			} 
+			paymentInfo={
+				"bank_transaction_id":round(time.time()),
+				"order_number":orderId,
+				"prime": orderInfo["prime"],
+				"partner_key": partnerKey,
+				"merchant_id": merchantId,
+				"details":"TapPay Test",
+				"amount": orderInfo["order"]["price"],
+				"currency": "TWD",
+				"details":"TapPay Test",		
+				"cardholder": {
+					"phone_number":orderInfo["order"]["contact"]["phone"],
+					"name": orderInfo["order"]["contact"]["name"],
+					"email": orderInfo["order"]["contact"]["email"],
+					"zip_code": "",
+					"address": "",
+					"national_id": ""
+					},
+			}
+			paymentResponse=requests.post(TapPayUrl,headers=headers,data=json.dumps(paymentInfo))
+			responseFromTapPay=json.loads(paymentResponse.text) 
+			#print(responseFromTapPay)
+			if responseFromTapPay["status"]==0:
+				print("Payment success!")
+				responseData={"data":{"number":orderId,"payment":{"status": responseFromTapPay["status"],"message": "付款成功"}}}
+				try:
+					conn = mysql_pool.get_connection() #get connection from connect pool
+					cursor = conn.cursor()
+					sql="UPDATE orderinfo SET paymentStatus=%s WHERE orderId=%s"
+					val=("paid",orderId)
+					cursor.execute(sql,val)	
+					conn.commit()	
+					#Record this history
+					sql ="INSERT INTO transactionhistory(order_number, status, msg, rec_trade_id, bank_transaction_id, transaction_time_millis, bank_result_code, bank_result_msg)VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+					val=(orderId,responseFromTapPay["status"],responseFromTapPay["msg"],responseFromTapPay["rec_trade_id"],responseFromTapPay["bank_transaction_id"],responseFromTapPay["transaction_time_millis"],responseFromTapPay["bank_result_code"],responseFromTapPay["bank_result_msg"])
+					cursor.execute(sql,val)	
+					conn.commit()		
+					#Delete booking car		
+					sql='DELETE FROM booking WHERE memberId=%s'
+					cursor.execute(sql,[payload["id"]])
+					conn.commit()			
+				except Exception as e:
+					print(e)
+					response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   
+					response.headers["Content-Type"] = "application/json"
+					return response
+			else:
+				print("Payment failed!")
+				responseData={"data":{"number":orderId,"payment":{"status":responseFromTapPay["status"] ,"message": "付款失敗"}}}
+			cursor.close()
+			conn.close()	
+			response = make_response(jsonify(responseData),200 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		else:
+			response = make_response(jsonify({"error":True,"message":"Can't store order to database."} ),400 )   
+			response.headers["Content-Type"] = "application/json"
+			return response
+		
+	else:
+		response = make_response(jsonify({"error":True,"message":"You didn't login. Please login for this service."}),403 )   
+		response.headers["Content-Type"] = "application/json"
+		return response
 
 @app.route("/api/booking",methods=["GET"])
 def getBookingInfo():
@@ -159,7 +311,7 @@ def deleteBooking():
 			conn.commit()		
 			count = cursor.rowcount 
 			conn.commit()		
-			print(count)
+			#print(count)
 		except Exception as e:
 			print(e)
 			response = make_response(jsonify({"error":True,"message":"Can't connect to database."} ),500 )   

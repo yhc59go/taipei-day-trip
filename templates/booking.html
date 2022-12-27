@@ -27,9 +27,9 @@
             </div>
             <div id="creditCard" class="creditCardInformation">
                 <div class="creditCardTitleInBookingPage">信用卡付款資訊</div>
-                <div class="itemInBookingPage">卡片號碼 ： <input id="creditCardNumber"  class="creditCardItem"  type="password" placeholder="**** **** **** ****"></div>
-                <div class="itemInBookingPage">過期時間 ： <input id="creditCardTime"  class="creditCardItem"  type="text" placeholder="MM / YY"></div>
-                <div class="itemInBookingPage">驗證密碼 ： <input id="creditCardPassword"  class="creditCardItem"  type="text" placeholder="CVV"></div>
+                <div class="itemInBookingPage">卡片號碼 ： <div id="card-number"  class="tpfield"  type="password" ></div></div>
+                <div class="itemInBookingPage">過期時間 ： <div id="card-expiration-date"  class="tpfield"  type="text"></div></div>
+                <div class="itemInBookingPage">驗證密碼 ： <div id="card-ccv"  class="tpfield"  type="text"></div></div>
             </div>
             <div id="totalPrice" class="totalPrice">總價 ： <span id="totalCostInBookingPage"></span></div>
             <input type="button" class="bookingSubmitInBookingPage" id="bookingSubmitInBookingPage" value="確認訂購並付款">
@@ -41,6 +41,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
     <script src="/JS/booking.js"></script>
 {% endblock %}
 
