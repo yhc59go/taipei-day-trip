@@ -131,10 +131,8 @@ function deleteBooking(){
 }
 ////TapPay////
 //Setup SDK//
-const APP_KEY="app_cBO7BFUlBqBe4e7tjjRa5iIkBfOA7xQvbCP9XZyQrdJtvGK7pgrTC3wRbuwH";
-const APP_ID=126973;
 
-TPDirect.setupSDK(APP_ID, APP_KEY, 'sandbox')
+TPDirect.setupSDK(`${APP_ID}`, `${APP_KEY}`, 'sandbox')
 //TPDirect.card.setup(config)//
 var fields = {
     number: {
@@ -296,7 +294,7 @@ function sendPrimeToBackendServer(prime){
         "order": {
           "price": bookingDataPrice,
           "trip": {
-            "attraction": bookingAttraction,
+            "attraction": bookingDataAttraction,
             "date": bookingDataDate,
             "time": bookingDataTime,
           },
