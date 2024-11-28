@@ -623,5 +623,5 @@ def getCategories():
 		response = make_response(jsonify({"data":None} ),200 )  
 		response.headers["Content-Type"] = "application/json"
 		return response
-
+#app.run(ssl_context='adhoc')
 app.run(host="0.0.0.0",port=3000)

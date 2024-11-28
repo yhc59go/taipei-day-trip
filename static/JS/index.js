@@ -1,9 +1,11 @@
 var nextPage=0;
 let isLoading=false;
 var keywordOfSearch;
-var src=`http://54.150.212.206:3000/api/attractions?page=${nextPage}`;
+let weblocate="https://3.107.150.70"
+let webport=""
+var src=`${weblocate}:${webport}/aipi/attractions?page=${nextPage}`;
 function getCategoryData(){
-    srcCategory="http://54.150.212.206:3000/api/categories";
+    srcCategory=`${weblocate}:${webport}/api/categories`;
     fetch(srcCategory,{
             method: "GET",
             headers: {
@@ -109,7 +111,7 @@ const callbackForAttractions = (entries, observer) => {
         console.log(entry);
         // Load more
         if (entry.isIntersecting && isLoading==false && nextPage!=null) {
-            src=`http://54.150.212.206:3000/api/attractions?page=${nextPage}`;
+            src=`${weblocate}:${webport}/api/attractions?page=${nextPage}`;
             getData(src);   
             observer.observe(bottomOfContent);   
         } 
@@ -156,7 +158,7 @@ function searchAttraction() {
     let searchAttraction = document.getElementsByName('searchAttraction');
     keywordOfSearch = searchAttraction[0].value;
     nextPage=0;
-    src=`http://54.150.212.206:3000/api/attractions?page=${nextPage}&keyword=${keywordOfSearch}`;
+    src=`${weblocate}:${webport}/api/attractions?page=${nextPage}&keyword=${keywordOfSearch}`;
     let attractionsGroup=document.querySelector('.attractionsGroup');
     attractionsGroup.replaceChildren();
     
@@ -165,7 +167,7 @@ function searchAttraction() {
             console.log(entry);
             // Load more
             if (entry.isIntersecting && isLoading==false && nextPage!=null) {
-                src=`http://54.150.212.206:3000/api/attractions?page=${nextPage}&keyword=${keywordOfSearch}`;
+                src=`${weblocate}:${webport}/api/attractions?page=${nextPage}&keyword=${keywordOfSearch}`;
                 getData(src);   
                 observerForSearch.observe(bottomOfContent);   
             } 

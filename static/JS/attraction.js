@@ -1,6 +1,8 @@
 var pathname = window.location.pathname;
 const attractionId=pathname.split("/")[2];
-src=`http://54.150.212.206:3000/api/attraction/${attractionId}`;
+let weblocate="https://3.107.150.70"
+let webport=""
+src=`${weblocate}:${webport}/api/attraction/${attractionId}`;
 window.onload=function(){
     //Get data of attraction, images
     fetch(src,
